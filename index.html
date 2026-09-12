@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Playground - Lucky Cat</title>
+<meta name="description" content="Nine small games from the Lucky Cat workshop. Wave, play, collect your stamps. From @luckycatrobot, the voice assistant that brings you luck.">
+<meta name="theme-color" content="#14110C">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Lucky Cat">
+<meta property="og:title" content="The Playground - nine small games from the Lucky Cat workshop">
+<meta property="og:description" content="Wave at the cat, try your luck, collect the stamps. From @luckycatrobot, the voice assistant that brings you luck.">
+<meta property="og:url" content="https://jacobegarcia.github.io/lucky-playground/">
+<meta property="og:image" content="https://jacobegarcia.github.io/luckycat/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Playground - Lucky Cat">
+<meta name="twitter:description" content="Nine small games. Wave, play, collect your stamps.">
+<meta name="twitter:image" content="https://jacobegarcia.github.io/luckycat/assets/og-image.png">
+<link rel="icon" type="image/png" href="mini-cream-t.png">
+<style>
+:root{
+  --ink-black:#14110C; --sumi:#1C1812; --cream:#F2EAD8; --dim:#A99F86;
+  --koban:#C9A227; --gold-hi:#E7C65B; --shu:#C73E2C; --line:#2C2618;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--ink-black);color:var(--cream);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--koban);color:var(--ink-black)}
+.wrap{max-width:1060px;margin:0 auto;padding:0 26px}
+a{color:var(--gold-hi);text-decoration:none}
+a:focus-visible,button:focus-visible,.card:focus-visible{outline:2px solid var(--gold-hi);outline-offset:3px;border-radius:4px}
+/* ---- hero: asymmetric, generous ma ---- */
+header{position:relative;padding:96px 0 84px}
+.vert{position:absolute;top:96px;right:26px;writing-mode:vertical-rl;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:15px;letter-spacing:.5em;color:var(--dim)}
+.vert b{color:var(--koban);font-weight:400}
+.kicker{font-size:11px;letter-spacing:.42em;color:var(--koban);text-transform:uppercase}
+h1{font-family:"Hiragino Mincho ProN","Yu Mincho",Georgia,serif;font-weight:400;font-size:clamp(44px,7vw,76px);letter-spacing:.02em;margin:22px 0 18px}
+h1 .jp{color:var(--koban);font-size:.62em;vertical-align:.18em;margin-left:14px;letter-spacing:.14em}
+.sub{color:var(--dim);font-size:15px;line-height:1.85;max-width:420px}
+#heroCat{position:absolute;right:12%;top:88px;cursor:pointer;display:block}
+@media(max-width:820px){#heroCat{position:static;margin:34px auto 0}.vert{display:none}header{padding-bottom:56px}}
+.hint{font-size:11px;letter-spacing:.14em;color:var(--dim);margin-top:26px}
+.hint b{color:var(--gold-hi);font-weight:500}
+/* seigaiha divider */
+.waves{height:26px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='26' viewBox='0 0 48 26'%3E%3Cg fill='none' stroke='%232C2618' stroke-width='1.4'%3E%3Ccircle cx='12' cy='26' r='11'/%3E%3Ccircle cx='12' cy='26' r='6.5'/%3E%3Ccircle cx='36' cy='26' r='11'/%3E%3Ccircle cx='36' cy='26' r='6.5'/%3E%3C/g%3E%3C/svg%3E");background-repeat:repeat-x;background-position:center}
+/* ---- stamp book ---- */
+#book{padding:72px 0 10px}
+.sec-label{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+.sec-label .jp{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;color:var(--shu);font-size:14px;letter-spacing:.3em}
+.sec-label h2{font-weight:500;font-size:13px;letter-spacing:.34em;text-transform:uppercase}
+.book-line{color:var(--dim);font-size:13px;line-height:1.8;max-width:460px}
+.streak{display:inline-block;margin-top:14px;border:1px solid var(--line);padding:8px 16px;font-size:11px;letter-spacing:.2em;color:var(--cream)}
+.streak b{color:var(--gold-hi);font-weight:600}
+.stamps{display:flex;gap:14px;margin-top:26px;flex-wrap:wrap}
+.stamp{width:52px;height:52px;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:19px;color:var(--line);transition:border-color .3s}
+.stamp.got{border-color:var(--shu);color:var(--shu);transform:rotate(-8deg);box-shadow:inset 0 0 0 2px rgba(199,62,44,.25);animation:hankoPop .5s cubic-bezier(.2,1.4,.4,1) backwards}
+@keyframes hankoPop{0%{transform:rotate(-8deg) scale(1.7);opacity:0}100%{transform:rotate(-8deg) scale(1);opacity:1}}
+.book-count{margin-top:14px;font-size:11px;letter-spacing:.26em;color:var(--dim)}
+.book-count b{color:var(--gold-hi);font-weight:500}
+.omikuji{display:none;margin-top:16px;padding-left:14px;border-left:2px solid var(--shu);font-size:12.5px;color:var(--dim);line-height:1.7}
+.omikuji .jp{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;color:var(--koban);letter-spacing:.2em;margin-right:10px}
+.omikuji a{color:var(--gold-hi);letter-spacing:.06em}
+.today{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;color:var(--koban);font-size:11px;letter-spacing:.14em;border:1px solid var(--koban);border-radius:999px;padding:2px 8px;margin-left:10px;vertical-align:.12em}
+.book-done{margin-top:10px;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:14px;letter-spacing:.3em;color:var(--gold-hi);display:none}
+#book.complete .book-done{display:block}
+#book.complete .stamp{border-color:var(--koban)}
+/* ---- grid ---- */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:64px 0 0}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+.card{background:var(--ink-black);padding:30px 26px 28px;cursor:pointer;position:relative;transition:background .25s}
+.card:hover{background:var(--sumi)}
+.card .num{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;color:var(--koban);font-size:13px;letter-spacing:.2em}
+.card canvas{display:block;width:100%;height:132px;margin:18px 0 20px}
+.card h3{font-weight:500;font-size:16px;letter-spacing:.1em;margin-bottom:8px}
+.card p{color:var(--dim);font-size:12.5px;line-height:1.75;min-height:66px}
+.card .go{font-size:10px;letter-spacing:.3em;color:var(--gold-hi);text-transform:uppercase;margin-top:14px}
+.card .go::after{content:"  \2192"}
+.card .hanko{position:absolute;top:22px;right:22px;width:34px;height:34px;border:1.5px solid var(--shu);border-radius:50%;color:var(--shu);display:none;align-items:center;justify-content:center;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:14px;transform:rotate(-10deg);box-shadow:inset 0 0 0 2px rgba(199,62,44,.2)}
+.card.got .hanko{display:flex}
+/* feeling lucky */
+.lucky-row{text-align:center;padding:56px 0 8px}
+.luckyBtn{background:none;border:1px solid var(--koban);color:var(--koban);font:500 12px/1 inherit;letter-spacing:.34em;padding:16px 34px;cursor:pointer;text-transform:uppercase;transition:background .25s,color .25s}
+.luckyBtn:hover{background:var(--koban);color:var(--ink-black)}
+.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(90px);background:var(--cream);color:var(--ink-black);font-size:12px;letter-spacing:.22em;padding:13px 26px;transition:transform .35s cubic-bezier(.2,.9,.3,1.2);z-index:9}
+.toast.show{transform:translateX(-50%) translateY(0)}
+/* footer */
+footer{border-top:1px solid var(--line);margin-top:72px;padding:44px 0 64px}
+footer .cols{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:baseline}
+footer .brand{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:14px;letter-spacing:.24em}
+footer .brand span{color:var(--koban)}
+footer nav a{margin-left:22px;font-size:12px;letter-spacing:.14em}
+footer .fine{color:var(--dim);font-size:11px;letter-spacing:.1em;margin-top:26px}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="vert">LUCKY CAT <b>招き猫</b> 縁起物</div>
+    <div class="kicker">Lucky Cat Robotics &middot; Chicago</div>
+    <h1>The Playground<span class="jp">遊び場</span></h1>
+    <p class="sub">Nine small games from the workshop. Wave at the cat, try your luck, and collect the stamps - the book below remembers every visit.</p>
+    <canvas id="heroCat" width="300" height="240"></canvas>
+    <div class="hint">tap = <b>wave</b> &nbsp;&middot;&nbsp; drag across the cat = <b>pet</b></div>
+  </div>
+</header>
+
+<div class="waves"></div>
+
+<section id="book" class="wrap">
+  <div class="sec-label"><span class="jp">御朱印帳</span><h2>Stamp Book</h2></div>
+  <p class="book-line">In Japan you collect stamps at every temple and station you visit. Here you collect one for every toy you play. Come back tomorrow - the cat counts the days.</p>
+  <div class="streak">DAY <b id="streakN">1</b> &nbsp;·&nbsp; <span id="streakJp">一日目</span></div>
+  <div class="book-count"><b id="bookN">0</b> / 9 COLLECTED</div>
+  <div class="omikuji" id="omikuji"><span class="jp">今日のおみくじ</span>Today's fortune still waits - <a href="https://jacobegarcia.github.io/lucky-wave/">the first wave of the day draws it</a>.</div>
+  <div class="book-done">満願 &nbsp;-&nbsp; all nine stamps. the cat is pleased.</div>
+  <div class="stamps" id="stamps"></div>
+</section>
+
+<main class="wrap">
+  <div class="grid" id="grid"></div>
+  <div class="lucky-row">
+    <button class="luckyBtn" id="feelLucky">Feeling lucky &nbsp;運試し</button>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div class="brand">LUCKY <span>CAT</span></div>
+      <nav>
+        <a href="https://jacobegarcia.github.io/luckycat/">Main site</a>
+        <a href="https://jacobegarcia.github.io/luckycat/#wishlist">Wishlist</a>
+        <a href="https://jacobegarcia.github.io/lucky-sounds/ambient/">Ambient</a>
+      </nav>
+    </div>
+    <div class="fine">@luckycatrobot - the voice assistant that brings you luck &nbsp;·&nbsp; made in chicago</div>
+  </div>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* ---------- registry ---------- */
+const TOYS=[
+ {id:"wave", kanji:"波", url:"https://jacobegarcia.github.io/lucky-wave/",  name:"WAVE FOR LUCK", desc:"The original waver. Tap for a wave, drag for a pet - the first wave of the day is today's fortune."},
+ {id:"fortune", kanji:"福", url:"https://jacobegarcia.github.io/lucky-fortune/",name:"LUCKY FORTUNE", desc:"Press and hold the koban. The cat draws your daily luck - a number, a charm, a card worth posting."},
+ {id:"tamagotchi", kanji:"猫", url:"https://jacobegarcia.github.io/lucky-cat-tamagotchi/",name:"POCKET LUCKY", desc:"The companion. Feed it, play with it, put it to sleep - Lucky keeps living while you're away."},
+ {id:"catch", kanji:"捕", url:"https://jacobegarcia.github.io/lucky-catch/", name:"CATCH THE FORTUNE", desc:"Steer the cat, catch luck in the waving paw, dodge the bad days. Fill the meter for a Fortune Round."},
+ {id:"runner", kanji:"走", url:"https://jacobegarcia.github.io/lucky-runner/",name:"LUCKY RUNNER", desc:"One button. Jump the black jars, grab the koban. Same course all day, everywhere - beat the world."},
+ {id:"pusher", kanji:"小", url:"https://jacobegarcia.github.io/koban-pusher/",name:"KOBAN PUSHER", desc:"Drop coins on the pile and shove it off the gold edge. Silver pays 3, the red \u798F pays 5."},
+ {id:"lamp", kanji:"灯", url:"https://jacobegarcia.github.io/rub-the-lamp/",name:"RUB THE LAMP", desc:"The lamp edition - same brain, second body. Drag to rub; the first wish of the day is today's wish."},
+ {id:"bells", kanji:"鈴", url:"https://jacobegarcia.github.io/lucky-bells/", name:"LUCKY BELLS", desc:"Tap the coins, the bell, the cat. The cat remembers your tune - then lets you share it."},
+ {id:"sounds", kanji:"音", url:"https://jacobegarcia.github.io/lucky-sounds/",name:"SOUND IDENTITY", desc:"Bell-collar timbre, A major pentatonic, warm gold. The sound of the whole product line, procedurally synthesized."}
+];
+
+/* ---------- shared canvas ---------- */
+const G="#C9A227", G2="#E7C65B", CREAM="#F2EAD8", DIM="#5A5240", SHU="#C73E2C";
+function fit(cv){ const r=cv.getBoundingClientRect(), d=Math.min(2,window.devicePixelRatio||1);
+  cv.width=Math.max(2,r.width*d); cv.height=Math.max(2,r.height*d); return d; }
+// canonical Lucky Cat mark (single-ink, mask-cut) rendered from the official layered pair.
+// Base = seated pose; paw = raised-arm layer, pivot 34.5% x 47% of frame, wave = two waves then rest.
+const IMGS={};
+['hero-base.png','hero-paw.png'].forEach(n=>{ const i=new Image(); i.onload=()=>{IMGS[n]=i;}; i.src=n; });
+function cat(ctx,x,y,H,arm){ // x,y = feet center; H = drawn frame height (square frame)
+  const b=IMGS['hero-base.png'], p=IMGS['hero-paw.png'];
+  if(!b) return;
+  const ix=x-H/2, iy=y-0.9375*H; // feet sit at 93.75% of the frame
+  ctx.drawImage(b,ix,iy,H,H);
+  if(p&&arm!==null&&arm!==undefined){ ctx.save(); ctx.translate(ix+0.345*H,iy+0.47*H); ctx.rotate(arm);
+    ctx.drawImage(p,-0.345*H,-0.47*H,H,H); ctx.restore(); }
+}
+function waveArm(t,boost){ // canonical motion: rotate +/-(14+boost)deg, two waves, then rest
+  const ph=t%3.6;
+  if(ph>=1.8) return 0;
+  return Math.sin(ph/1.8*Math.PI*4)*(14+boost)*Math.PI/180;
+}
+function coin(ctx,x,y,r,c){ ctx.fillStyle=c||G; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill();
+  ctx.strokeStyle="rgba(20,17,12,.55)"; ctx.lineWidth=1.4; ctx.stroke(); }
+
+/* ---------- vignettes ---------- */
+const VIGNETTES={
+ wave(ctx,W,H,t){ cat(ctx,W/2,H-14,116,waveArm(t,0)); },
+ fortune(ctx,W,H,t){ const x=W/2,y=H/2;
+   ctx.fillStyle="rgba(231,198,91,.1)"; ctx.beginPath(); ctx.arc(x,y,44,0,7); ctx.fill();
+   for(let i=0;i<3;i++){ ctx.strokeStyle=`rgba(201,162,39,${.4-i*.12})`; ctx.lineWidth=1.6;
+     ctx.beginPath(); ctx.arc(x,y,24+i*9+Math.sin(t*1.8+i)*2.5,0,7); ctx.stroke(); }
+   coin(ctx,x,y,18,G2); ctx.fillStyle="#14110C"; ctx.font="13px serif"; ctx.textAlign="center"; ctx.fillText("\u798F",x,y+4.5); },
+ tamagotchi(ctx,W,H,t){ const bob=Math.sin(t*1.8)*3.5;
+   cat(ctx,W/2,H-16+bob,104,null);
+   ctx.fillStyle=DIM; ctx.font="14px serif";
+   ctx.fillText("z",W/2+40,H-74+bob*.5); ctx.fillText("z",W/2+52,H-88+bob*.4); },
+ catch(ctx,W,H,t){ const px=W/2+Math.sin(t*1.5)*W*.24;
+   for(let i=0;i<5;i++){ const fy=((t*55+i*45)%(H+36))-18, fx=W*(0.15+0.7*((i*37)%10)/10);
+     coin(ctx,fx,fy,5.5,i%4==0?SHU:G); }
+   cat(ctx,px,H-12,92,0.35); },
+ runner(ctx,W,H,t){ ctx.strokeStyle=DIM; ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(0,H-20); ctx.lineTo(W,H-20); ctx.stroke();
+   const j=Math.max(0,Math.sin(t*3.6))*-24;
+   cat(ctx,W*.3,H-16+j,84,null);
+   for(let i=0;i<3;i++){ const jx=W-((t*80+i*130)%(W+60))+30;
+     ctx.fillStyle="#26211A"; ctx.fillRect(jx,H-38,15,18);
+     ctx.fillStyle=G; ctx.fillRect(jx+3,H-41,9,3.5); } },
+ pusher(ctx,W,H,t){ const shelf=H*.6, sway=Math.sin(t*1.8)*7;
+   ctx.fillStyle="#26211A"; ctx.fillRect(0,shelf,W,4);
+   ctx.fillStyle=G2; ctx.fillRect(W-13,shelf-2,13,8);
+   for(let i=0;i<9;i++){ coin(ctx,26+i*(W-64)/8+sway,shelf-7-((i%3)*9),6.5,i==4?SHU:G); }
+   coin(ctx,W/2-36,(t*62)%(shelf-18)+7,6.5,G2); },
+ lamp(ctx,W,H,t){ const x=W/2,y=H*.68;
+   ctx.fillStyle="rgba(231,198,91,.12)"; ctx.beginPath(); ctx.ellipse(x,y,52,30,0,0,7); ctx.fill();
+   ctx.fillStyle=G; ctx.beginPath(); ctx.ellipse(x,y,30,16,0,0,7); ctx.fill();
+   ctx.beginPath(); ctx.moveTo(x+25,y-4); ctx.quadraticCurveTo(x+52,y-19,x+62,y-6);
+   ctx.quadraticCurveTo(x+44,y-2,x+27,y+5); ctx.closePath(); ctx.fill();
+   ctx.fillRect(x-35,y-6,11,9);
+   ctx.fillStyle="#14110C"; ctx.font="10px serif"; ctx.textAlign="center"; ctx.fillText("\u798F",x,y+3.5);
+   for(let i=0;i<8;i++){ const a=t*1.8+i*.9, r=10+((t*28+i*11)%30);
+     ctx.fillStyle=`rgba(231,198,91,${1-r/42})`;
+     ctx.beginPath(); ctx.arc(x+62+Math.cos(a)*r*.45,y-18-Math.abs(Math.sin(a))*r,2.4,0,7); ctx.fill(); } },
+ bells(ctx,W,H,t){ const x=W/2,y=H*.58, hit=Math.sin(t*2.6)>0;
+   if(hit){ ctx.strokeStyle=`rgba(201,162,39,${.5-(Math.sin(t*2.6))*.35})`; ctx.lineWidth=1.5;
+     ctx.beginPath(); ctx.arc(x,y,26+Math.sin(t*2.6)*12,0,7); ctx.stroke(); }
+   ctx.fillStyle=hit?G2:G; ctx.beginPath(); ctx.arc(x,y,19,0,7); ctx.fill();
+   ctx.strokeStyle="rgba(20,17,12,.55)"; ctx.lineWidth=1.4; ctx.stroke();
+   ctx.fillStyle="#14110C"; ctx.fillRect(x-2,y-2,4,4);
+   for(let i=0;i<5;i++){ const nt=(t*1.2+i*.7)%2;
+     ctx.fillStyle=`rgba(242,234,216,${1-nt*.5})`; ctx.font="12px serif";
+     ctx.fillText(i%2?"\u266A":"\u2669",x+28+i*15,y-8-nt*26); } },
+ sounds(ctx,W,H,t){ const N=22;
+   for(let i=0;i<N;i++){ const h=7+Math.abs(Math.sin(t*2.2+i*.55))*(H*.46)*(0.4+0.6*Math.sin(i*.9+1)**2);
+     ctx.fillStyle=i%5==0?G2:G; ctx.fillRect(W*.08+i*(W*.84)/N,H*.8-h,(W*.84)/N*.55,h); } }
+};
+
+/* ---------- stamp book ---------- */
+const BK="lucky_stampbook_v1";
+function todayStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+let book={days:[],stamps:{}};
+try{ const raw=localStorage.getItem(BK); if(raw) book=JSON.parse(raw); }catch(e){}
+const today=todayStr();
+if(!book.days.includes(today)){ book.days.push(today); if(book.days.length>60) book.days=book.days.slice(-60); }
+// streak: consecutive days ending today
+let streak=0; { const set=new Set(book.days); const d=new Date();
+  while(set.has(d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"))){ streak++; d.setDate(d.getDate()-1); } }
+// omikuji-of-the-day: lucky-wave stamps 'luckycat_cat_daily' as YYYYMMDD on the first wave
+function fortuneWaits(){
+  try{ const v=localStorage.getItem('luckycat_cat_daily');
+    if(!v) return true;
+    const d=new Date();
+    return parseInt(v,10)!==(d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate());
+  }catch(e){ return false; }
+}
+const FORTUNE_WAITS=fortuneWaits();
+if(FORTUNE_WAITS) document.getElementById('omikuji').style.display='block';
+// auto-detect toys that persist their own state (shared origin)
+const DETECT={"wave":["luckycat_luck","luckycat_cat_daily"],"lamp":["luckycat_wishes","luckycat_lamp_daily"],"pusher":["kobanBest"],"catch":["lc-best"]};
+Object.keys(DETECT).forEach(id=>{
+  if(book.stamps[id]) return;
+  for(const k of DETECT[id]){ try{ if(localStorage.getItem(k)!==null){ book.stamps[id]=Date.now(); break; } }catch(e){} }
+});
+function saveBook(){ try{ localStorage.setItem(BK,JSON.stringify(book)); }catch(e){} }
+saveBook();
+const JPDAYS=["", "一日目","二日目","三日目","四日目","五日目","六日目","七日目","八日目","九日目","十日目"];
+document.getElementById('streakN').textContent=streak;
+document.getElementById('streakJp').textContent=streak<JPDAYS.length?JPDAYS[streak]:(streak+"日連続");
+const stampsEl=document.getElementById('stamps');
+TOYS.forEach((toy,i)=>{
+  const s=document.createElement('div'); s.className='stamp'+(book.stamps[toy.id]?' got':''); s.id='stamp-'+toy.id;
+  s.textContent=toy.kanji; s.title=toy.name; s.style.animationDelay=(i*0.09)+'s';
+  stampsEl.appendChild(s);
+});
+let celebrated=false;
+function refreshBook(){
+  const n=Object.keys(book.stamps).length;
+  document.getElementById('bookN').textContent=n;
+  document.getElementById('book').classList.toggle('complete',n>=TOYS.length);
+  if(n>=TOYS.length && !celebrated){
+    celebrated=true;
+    // the moment the book fills: momiji burst over the hero, ascending pentatonic run
+    chime([440,554.25,659.25,880,1108.7],95,.6,.1);
+    const r=heroCv.getBoundingClientRect();
+    for(let i=0;i<18;i++) sparks.push({x:r.width*Math.random(),y:r.height*Math.random()*.5,
+      vx:(Math.random()-.5)*2.6,vy:Math.random()*1.4+0.4,life:1.4});
+  }
+}
+function grantStamp(id){
+  if(book.stamps[id]) return;
+  book.stamps[id]=Date.now(); saveBook();
+  const s=document.getElementById('stamp-'+id); if(s) s.classList.add('got');
+  const c=document.getElementById('card-'+id); if(c){ c.classList.add('got'); const go=c.querySelector('.go'); if(go) go.textContent='Play again'; }
+  chime([880,1108.7],95,.5,.1); // A5 -> C#6: the stamp lands
+  refreshBook();
+}
+refreshBook();
+
+/* ---------- cards ---------- */
+const grid=document.getElementById('grid');
+const ctxs=[];
+TOYS.forEach((toy,i)=>{
+  const c=document.createElement('div'); c.className='card'+(book.stamps[toy.id]?' got':''); c.id='card-'+toy.id;
+  c.tabIndex=0; c.setAttribute('role','link'); c.setAttribute('aria-label',toy.name+' - opens in a new tab');
+  c.innerHTML=`<div class="num">${toy.kanji} &nbsp;${String(i+1).padStart(2,"0")}${(toy.id==='wave'&&FORTUNE_WAITS)?'<span class="today">今日</span>':''}</div><canvas></canvas><h3>${toy.name}</h3><p>${toy.desc}</p><div class="go">${book.stamps[toy.id]?'Play again':'Play'}</div><div class="hanko">済</div>`;
+  const open=()=>{ grantStamp(toy.id); window.open(toy.url,'_blank','noopener'); };
+  c.addEventListener('click',open);
+  c.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); open(); } });
+  grid.appendChild(c);
+  const cv=c.querySelector('canvas'); const d=fit(cv);
+  const ctx=cv.getContext('2d'); ctx.scale(d,d);
+  ctxs.push({ctx,toy,cv,d});
+});
+
+/* ---------- hero ---------- */
+const heroCv=document.getElementById('heroCat');
+let heroD=fit(heroCv); const heroCtx=heroCv.getContext('2d'); heroCtx.setTransform(heroD,0,0,heroD,0,0);
+addEventListener('resize',()=>{ heroD=fit(heroCv); heroCtx.setTransform(heroD,0,0,heroD,0,0);
+  ctxs.forEach(o=>{ const d=fit(o.cv); o.ctx.setTransform(d,0,0,d,0,0); o.d=d; }); });
+let waves=0, sparks=[], lastX=null;
+heroCv.addEventListener('pointerdown',()=>{ waves++; tone(659.25,.35,.09); });
+heroCv.addEventListener('pointermove',e=>{
+  const r=heroCv.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top;
+  if(lastX===null){ lastX=x; return; }
+  if(Math.abs(x-lastX)>14){
+    for(let i=0;i<3;i++) sparks.push({x,y,vx:(Math.random()-.5)*2.2,vy:-Math.random()*2.2-0.5,life:1});
+    tone(1108.7,.18,.035);
+    lastX=x;
+  }
+});
+
+/* ---------- seasonal momiji (sep-nov) ---------- */
+const MO=new Date().getMonth();
+const MOMIJI=(MO>=8&&MO<=10)?Array.from({length:5},(_,i)=>({x0:Math.random(),off:Math.random()*20,spin:.5+Math.random()})):[];
+function leaf(ctx,x,y,rot,s){
+  ctx.save(); ctx.translate(x,y); ctx.rotate(rot); ctx.scale(s,s);
+  ctx.strokeStyle=SHU; ctx.lineWidth=1.3; ctx.beginPath();
+  for(let a=0;a<5;a++){ const an=a*1.256-1.57; ctx.moveTo(0,0);
+    ctx.lineTo(Math.cos(an)*7,Math.sin(an)*7); }
+  ctx.moveTo(0,0); ctx.lineTo(0,9); ctx.stroke(); ctx.restore();
+}
+
+/* ---------- draw ---------- */
+let t0=performance.now();
+function tick(){
+  const t=(performance.now()-t0)/1000;
+  const r=heroCv.getBoundingClientRect();
+  heroCtx.clearRect(0,0,r.width,r.height);
+  // enso - tapered brush ring with a gap, behind everything
+  heroCtx.save(); heroCtx.translate(r.width/2,r.height*.5);
+  for(let i=0;i<26;i++){ const a0=-1.9+i*.155, a1=a0+.14;
+    heroCtx.strokeStyle="rgba(201,162,39,.14)"; heroCtx.lineWidth=4.6-i*.13;
+    heroCtx.beginPath(); heroCtx.arc(0,0,92,a0,a1); heroCtx.stroke(); }
+  heroCtx.restore();
+  // tsukimi moon - september is moon-viewing season
+  const mx=r.width*.82, my=r.height*.2;
+  heroCtx.fillStyle=CREAM; heroCtx.beginPath(); heroCtx.arc(mx,my,17,0,7); heroCtx.fill();
+  heroCtx.strokeStyle="rgba(201,162,39,.5)"; heroCtx.lineWidth=1.4;
+  heroCtx.beginPath(); heroCtx.arc(mx,my,24,0,7); heroCtx.stroke();
+  // momiji drift
+  MOMIJI.forEach((m,i)=>{ const fy=((t*9+m.off*23)%(r.height+30))-15;
+    const fx=r.width*(.06+.88*((m.x0+Math.sin(t*.4+i)*.04)%1));
+    leaf(heroCtx,fx,fy,t*m.spin+i,.8); });
+  // ground line
+  heroCtx.strokeStyle="rgba(201,162,39,.35)"; heroCtx.beginPath();
+  heroCtx.moveTo(r.width*.1,r.height-30); heroCtx.lineTo(r.width*.9,r.height-30); heroCtx.stroke();
+  // zabuton cushion
+  heroCtx.fillStyle="rgba(199,62,44,.85)";
+  heroCtx.beginPath(); heroCtx.ellipse(r.width/2,r.height-34,56,9.5,0,0,7); heroCtx.fill();
+  const arm=waveArm(t,Math.min(waves*3,10));
+  cat(heroCtx,r.width/2,r.height-42,205,arm);
+  sparks=sparks.filter(s=>s.life>0);
+  sparks.forEach(s=>{ s.x+=s.vx; s.y+=s.vy; s.vy+=.05; s.life-=.03;
+    heroCtx.fillStyle=`rgba(231,198,91,${s.life})`;
+    heroCtx.beginPath(); heroCtx.arc(s.x,s.y,2.2*s.life+0.5,0,7); heroCtx.fill(); });
+  ctxs.forEach(o=>{ const cr=o.cv.getBoundingClientRect();
+    o.ctx.clearRect(0,0,cr.width,cr.height);
+    VIGNETTES[o.toy.id](o.ctx,cr.width,cr.height,t); });
+}
+tick();
+if(!RM) setInterval(tick,50);
+
+/* ---------- sound: bell-collar chimes, gesture-gated ---------- */
+let AC=null;
+function tone(f,dur,g,type){
+  try{
+    AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state==='suspended') AC.resume();
+    const t0=AC.currentTime;
+    const o=AC.createOscillator(), gn=AC.createGain();
+    o.type=type||'sine'; o.frequency.value=f;
+    gn.gain.setValueAtTime(0,t0); gn.gain.linearRampToValueAtTime(g,t0+.012);
+    gn.gain.exponentialRampToValueAtTime(.0001,t0+dur);
+    o.connect(gn).connect(AC.destination); o.start(t0); o.stop(t0+dur+.05);
+  }catch(e){}
+}
+function chime(seq,gap,dur,g){ seq.forEach((f,i)=>setTimeout(()=>tone(f,dur,g),i*(gap||90))); }
+
+/* ---------- feeling lucky ---------- */
+document.getElementById('feelLucky').addEventListener('click',()=>{
+  const unplayed=TOYS.filter(t=>!book.stamps[t.id]);
+  const pick=(unplayed.length?unplayed:TOYS)[(Math.random()*(unplayed.length?unplayed.length:TOYS.length))|0];
+  const toast=document.getElementById('toast');
+  toast.textContent=("THE CAT PICKS "+pick.name).toUpperCase();
+  chime([440,554.25,659.25],100,.4,.09);
+  toast.classList.add('show');
+  setTimeout(()=>{ toast.classList.remove('show'); grantStamp(pick.id); window.open(pick.url,'_blank','noopener'); },1100);
+});
+</script>
+</body>
+</html>
